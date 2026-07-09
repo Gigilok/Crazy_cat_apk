@@ -32,14 +32,16 @@ jobs:
 
       - name: Recreate Android project
         run: |
-          # Backup dos arquivos personalizados
+          # Backup dos seus arquivos personalizados
           cp android/app/src/main/AndroidManifest.xml /tmp/AndroidManifest.xml 2>/dev/null || true
           cp android/app/src/main/res/xml/device_filter.xml /tmp/device_filter.xml 2>/dev/null || true
           # Deleta a pasta android baguncada
           rm -rf android
-          # Recria com a estrutura correta do Flutter 3.16.0
-          flutter create --platforms=android --project-name crazycat_controller .
-          # Restaura os arquivos personalizados
+          # Cria projeto temporario limpo (sem conflito de nome de pasta)
+          flutter create --platforms=android --project-name crazycat_controller /tmp/crazycat_temp
+          # Copia so a pasta android gerada corretamente
+          cp -r /tmp/crazycat_temp/android .
+          # Restaura seus arquivos personalizados
           cp /tmp/AndroidManifest.xml android/app/src/main/AndroidManifest.xml 2>/dev/null || true
           mkdir -p android/app/src/main/res/xml
           cp /tmp/device_filter.xml android/app/src/main/res/xml/device_filter.xml 2>/dev/null || true
