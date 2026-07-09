@@ -31,6 +31,15 @@ dependencies:
   # Icons
   cupertino_icons: ^1.0.6
 
+  # Google Fonts
+  google_fonts: ^6.1.0
+
+  # Connectivity (WiFi status)
+  connectivity_plus: ^5.0.2
+
+  # Network Info (IP address)
+  network_info_plus: ^4.1.0
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
