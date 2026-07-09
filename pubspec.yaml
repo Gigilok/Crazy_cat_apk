@@ -1,7 +1,10 @@
+# ==========================================
+# pubspec.yaml - CrazyCat Controller v3.0
+# ==========================================
 name: crazycat_controller
-description: Crazy Cat ESP32 Hacking Firmware Controller
+description: CrazyCat v3.0 - RF Hacking Controller APK
 publish_to: 'none'
-version: 3.0.0+30
+version: 3.0.0+1
 
 environment:
   sdk: '>=3.0.0 <4.0.0'
@@ -9,58 +12,34 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  cupertino_icons: ^1.0.6
-  
-  # Conectividade
-  flutter_bluetooth_serial: ^0.4.0
-  flutter_usb_serial: ^0.5.0
+
+  # HTTP
   http: ^1.1.0
-  web_socket_channel: ^2.4.0
-  network_info_plus: ^4.0.0
-  connectivity_plus: ^5.0.0
-  permission_handler: ^11.0.0
-  
-  # Camera e Stream
+
+  # Bluetooth Serial - versao BLE para Android 12+
+  flutter_bluetooth_serial_ble: ^0.5.0
+
+  # USB Serial - pacote correto: usb_serial (nao flutter_usb_serial)
+  usb_serial: ^0.5.2
+
+  # MJPEG Camera Stream
   flutter_mjpeg: ^2.0.4
-  cached_network_image: ^3.3.0
-  video_player: ^2.8.0
-  
-  # UI
-  google_fonts: ^6.1.0
-  flutter_animate: ^4.3.0
-  shimmer: ^3.0.0
-  sliding_up_panel: ^2.0.0+1
-  flutter_speed_dial: ^7.0.0
-  fl_chart: ^0.65.0
-  
-  # Estado e Utils
-  provider: ^6.1.0
-  shared_preferences: ^2.2.0
-  json_annotation: ^4.8.0
-  intl: ^0.18.0
+
+  # State Management
+  provider: ^6.1.1
+
+  # Icons
+  cupertino_icons: ^1.0.6
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  flutter_lints: ^3.0.0
-  build_runner: ^2.4.0
-  json_serializable: ^6.7.0
-  flutter_launcher_icons: ^0.13.0
+  flutter_lints: ^3.0.1
 
 flutter:
   uses-material-design: true
+
   assets:
     - assets/images/
     - assets/fonts/
-  
-  fonts:
-    - family: Cyberpunk
-      fonts:
-        - asset: assets/fonts/cyberpunk.ttf
-
-flutter_launcher_icons:
-  android: "launcher_icon"
-  ios: true
-  image_path: "assets/images/cat_logo.png"
-  min_sdk_android: 21
-  
+    
