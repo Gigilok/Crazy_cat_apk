@@ -12,7 +12,7 @@ class AttackToolsScreen extends StatefulWidget {
 }
 
 class _AttackToolsScreenState extends State<AttackToolsScreen> {
-  final ESP32Api _api = ESP32Api();
+  final ESP32API _api = ESP32API();
   final List<Map<String, dynamic>> _attacks = [
     {
       'name': 'Deauth Flood',
@@ -74,7 +74,6 @@ class _AttackToolsScreenState extends State<AttackToolsScreen> {
     });
 
     try {
-      // Simulação - implementar chamada real à API
       await Future.delayed(const Duration(seconds: 2));
       setState(() {
         _log += '[OK] Ataque $type iniciado no ESP32\n';
@@ -113,7 +112,6 @@ class _AttackToolsScreenState extends State<AttackToolsScreen> {
         child: SafeArea(
           child: Column(
             children: [
-              // Header
               Padding(
                 padding: const EdgeInsets.all(20),
                 child: Row(
@@ -140,8 +138,6 @@ class _AttackToolsScreenState extends State<AttackToolsScreen> {
                   ],
                 ),
               ),
-
-              // Warning
               Container(
                 margin: const EdgeInsets.symmetric(horizontal: 20),
                 padding: const EdgeInsets.all(12),
@@ -163,10 +159,7 @@ class _AttackToolsScreenState extends State<AttackToolsScreen> {
                   ],
                 ),
               ),
-
               const SizedBox(height: 15),
-
-              // Attacks List
               Expanded(
                 child: ListView.builder(
                   padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -266,8 +259,6 @@ class _AttackToolsScreenState extends State<AttackToolsScreen> {
                   },
                 ),
               ),
-
-              // Console
               Container(
                 margin: const EdgeInsets.all(20),
                 padding: const EdgeInsets.all(12),
