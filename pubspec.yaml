@@ -1,54 +1,56 @@
-# ==========================================
-# pubspec.yaml - CrazyCat Controller v3.0
-# ==========================================
-name: crazycat_controller
-description: CrazyCat v3.0 - RF Hacking Controller APK
-publish_to: 'none'
-version: 3.0.0+1
+class SerialCommands {
+  // Navegação
+  static const String up = 'up';
+  static const String down = 'down';
+  static const String select = 'ok';
+  static const String back = 'back';
+  
+  // Scan
+  static const String scanWiFi = 'scan_wifi';
+  static const String scanBle = 'scan_ble';
+  static const String scanCam = 'scan_cam';
+  
+  // Ataques
+  static const String deauth = 'deauth';
+  static const String evilTwin = 'evil';
+  static const String handshake = 'handshake';
+  static const String wps = 'wps';
+  static const String mitm = 'mitm';
+  
+  // RF
+  static const String rfScan = 'rf_scan';
+  static const String rfJam = 'rf_jam';
+  static const String rfCapture = 'rf_cap';
+  static const String rfTx = 'rf_tx';
+  static const String rfBrute = 'rf_brute';
+  
+  // Câmeras
+  static const String camScan = 'cam_scan';
+  static const String camBrute = 'cam_brute';
+  static const String camReboot = 'cam_reboot';
+  static const String camFreeze = 'cam_freeze';
+  
+  // Sistema
+  static const String status = 'status';
+  static const String stop = 'stop';
+  static const String reboot = 'reboot';
+  static const String help = 'help';
+  
+  // Respostas esperadas
+  static const String ok = '[+]';
+  static const String error = '[-]';
+  static const String info = '[INFO]';
+  static const String statusPrefix = '[STATUS]';
+}
 
-environment:
-  sdk: '>=3.0.0 <4.0.0'
-
-dependencies:
-  flutter:
-    sdk: flutter
-
-  # HTTP - DOWNGRADADO para compatibilidade com flutter_mjpeg
-  http: ^0.13.6
-
-  # Bluetooth Serial - versao BLE para Android 12+
-  flutter_bluetooth_serial_ble: ^0.5.0
-
-  # USB Serial - pacote correto: usb_serial
-  usb_serial: ^0.5.2
-
-  # MJPEG Camera Stream
-  flutter_mjpeg: ^2.0.4
-
-  # State Management
-  provider: ^6.1.1
-
-  # Icons
-  cupertino_icons: ^1.0.6
-
-  # Google Fonts
-  google_fonts: ^6.1.0
-
-  # Connectivity (WiFi status)
-  connectivity_plus: ^5.0.2
-
-  # Network Info (IP address)
-  network_info_plus: ^4.1.0
-
-dev_dependencies:
-  flutter_test:
-    sdk: flutter
-  flutter_lints: ^3.0.1
-
-flutter:
-  uses-material-design: true
-
-  assets:
-    - assets/images/
-    - assets/fonts/
-    
+class APIEndpoints {
+  static const String status = '/api/status';
+  static const String redes = '/api/redes';
+  static const String ataques = '/api/ataques';
+  static const String iniciar = '/api/iniciar';
+  static const String parar = '/api/parar';
+  static const String dados = '/api/dados';
+  static const String mitm = '/api/mitm';
+  static const String wps = '/api/wps';
+  static const String mobile = '/mobile';
+}
