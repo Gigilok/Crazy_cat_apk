@@ -1,9 +1,8 @@
 // ==========================================
-// rf_tools_screen.dart
+// rf_tools_screen.dart - CORRIGIDO
 // ==========================================
 import 'package:flutter/material.dart';
-import '../utils/commands.dart';
-import '../utils/constants.dart';
+import '../utils/constants.dart';  // MUDOU: era commands.dart
 
 class RFToolsScreen extends StatelessWidget {
   const RFToolsScreen({super.key});
@@ -11,14 +10,14 @@ class RFToolsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final tools = [
-      {'name': 'CC1101 Scanner', 'command': Commands.cc1101Scan, 'icon': Icons.radar},
-      {'name': 'CC1101 Jammer', 'command': Commands.cc1101Jammer, 'icon': Icons.wifi_tethering},
-      {'name': 'nRF24 Scanner', 'command': Commands.nrf24Scan, 'icon': Icons.blur_on},
-      {'name': 'nRF24 Jammer', 'command': Commands.nrf24Jammer, 'icon': Icons.wifi_tethering_error},
-      {'name': 'Sub-GHz DB', 'command': Commands.subghzDatabase, 'icon': Icons.storage},
-      {'name': 'Replay Attack', 'command': Commands.replayAttack, 'icon': Icons.replay},
-      {'name': 'Raw TX', 'command': Commands.rawTx, 'icon': Icons.send},
-      {'name': 'Raw RX', 'command': Commands.rawRx, 'icon': Icons.receipt},
+      {'name': 'CC1101 Scanner', 'command': SerialCommands.rfScan, 'icon': Icons.radar},
+      {'name': 'CC1101 Jammer', 'command': SerialCommands.rfJam, 'icon': Icons.wifi_tethering},
+      {'name': 'nRF24 Scanner', 'command': SerialCommands.rfScan, 'icon': Icons.blur_on},
+      {'name': 'nRF24 Jammer', 'command': SerialCommands.rfJam, 'icon': Icons.wifi_tethering_error},
+      {'name': 'Sub-GHz DB', 'command': SerialCommands.rfScan, 'icon': Icons.storage},
+      {'name': 'Replay Attack', 'command': SerialCommands.rfCapture, 'icon': Icons.replay},
+      {'name': 'Raw TX', 'command': SerialCommands.rfTx, 'icon': Icons.send},
+      {'name': 'Raw RX', 'command': SerialCommands.rfCapture, 'icon': Icons.receipt},
     ];
 
     return Scaffold(
