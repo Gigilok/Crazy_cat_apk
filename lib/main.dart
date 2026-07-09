@@ -127,7 +127,9 @@ class CrazyCatApp extends StatelessWidget {
           '/wireless-tools': (context) => const WirelessToolsScreen(),
           '/attack-tools': (context) => const AttackToolsScreen(),
           '/camera-hacker': (context) => const CameraHackerScreen(),
-          '/camera-viewer': (context) => const CameraViewerScreen(),
+          '/camera-viewer': (context) => const CameraViewerScreen(
+  camera: CameraDevice(ip: '', streamPath: '', brand: ''),
+),
           '/signal-manager': (context) => const SignalManagerScreen(),
           '/settings': (context) => const SettingsScreen(),
           '/terminal': (context) => const TerminalScreen(),
