@@ -13,7 +13,7 @@ class WirelessToolsScreen extends StatefulWidget {
 }
 
 class _WirelessToolsScreenState extends State<WirelessToolsScreen> {
-  final ESP32Api _api = ESP32Api();
+  final ESP32API _api = ESP32API();
   List<WiFiNetwork> _networks = [];
   WiFiNetwork? _selectedNetwork;
   bool _isScanning = false;
@@ -105,7 +105,6 @@ class _WirelessToolsScreenState extends State<WirelessToolsScreen> {
         child: SafeArea(
           child: Column(
             children: [
-              // Header
               Padding(
                 padding: const EdgeInsets.all(20),
                 child: Row(
@@ -132,8 +131,6 @@ class _WirelessToolsScreenState extends State<WirelessToolsScreen> {
                   ],
                 ),
               ),
-
-              // Scan Button
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20),
                 child: SizedBox(
@@ -162,10 +159,7 @@ class _WirelessToolsScreenState extends State<WirelessToolsScreen> {
                   ),
                 ),
               ),
-
               const SizedBox(height: 10),
-
-              // Status
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20),
                 child: Text(
@@ -173,10 +167,7 @@ class _WirelessToolsScreenState extends State<WirelessToolsScreen> {
                   style: const TextStyle(color: Colors.white70, fontSize: 12),
                 ),
               ),
-
               const SizedBox(height: 10),
-
-              // Networks List
               Expanded(
                 child: _networks.isEmpty
                     ? const Center(
@@ -264,8 +255,6 @@ class _WirelessToolsScreenState extends State<WirelessToolsScreen> {
                         },
                       ),
               ),
-
-              // Attack Buttons
               if (_selectedNetwork != null)
                 Container(
                   padding: const EdgeInsets.all(20),
