@@ -42,10 +42,10 @@ class CrazyCatApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (_) => BluetoothService()),
-        ChangeNotifierProvider(create: (_) => WiFiService()),
-        ChangeNotifierProvider(create: (_) => SerialService()),
-        ChangeNotifierProvider(create: (_) => ESP32API()),
+        ChangeNotifierProvider<BluetoothService>(create: (_) => BluetoothService()),
+        ChangeNotifierProvider<WiFiService>(create: (_) => WiFiService()),
+        ChangeNotifierProvider<SerialService>(create: (_) => SerialService()),
+        ChangeNotifierProvider<ESP32API>(create: (_) => ESP32API()),
       ],
       child: MaterialApp(
         title: AppConstants.appName,
@@ -119,12 +119,16 @@ class CrazyCatApp extends StatelessWidget {
         routes: {
           '/': (context) => const SplashScreen(),
           '/connect': (context) => const ConnectionScreen(),
-          '/dashboard': (context) => const DashboardScreen(),
+          '/dashboard': (context) => const DashboardScreen(
+            connectionType: ConnectionType.wifi,
+          ),
           '/rf-tools': (context) => const RFToolsScreen(),
           '/wireless-tools': (context) => const WirelessToolsScreen(),
           '/attack-tools': (context) => const AttackToolsScreen(),
           '/camera-hacker': (context) => const CameraHackerScreen(),
-          '/camera-viewer': (context) => const CameraViewerScreen(),
+          '/camera-viewer': (context) => const CameraViewerScreen(
+            camera: {},
+          ),
           '/signal-manager': (context) => const SignalManagerScreen(),
           '/settings': (context) => const SettingsScreen(),
           '/terminal': (context) => const TerminalScreen(),
@@ -133,4 +137,3 @@ class CrazyCatApp extends StatelessWidget {
     );
   }
 }
-
