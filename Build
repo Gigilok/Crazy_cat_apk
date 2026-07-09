@@ -1,0 +1,10 @@
+# Instalar dependencias
+flutter pub get
+
+# Build APK debug
+flutter build apk
+
+# Build APK release
+flutter build apk --release
+
+# Build via GitHub Actions (configurado em .github/workflows/build_apk.yml)
