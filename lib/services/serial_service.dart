@@ -1,13 +1,14 @@
 // ==========================================
 // serial_service.dart - CORRIGIDO
-// Usa usb_serial: ^0.5.2 (nao flutter_usb_serial)
+// Usa usb_serial: ^0.5.2
 // ==========================================
 import 'dart:async';
 import 'dart:typed_data';
+import 'package:flutter/material.dart';
 import 'package:usb_serial/usb_serial.dart';
 import 'package:usb_serial/transaction.dart';
 
-class SerialService {
+class SerialService extends ChangeNotifier {
   static final SerialService _instance = SerialService._internal();
   factory SerialService() => _instance;
   SerialService._internal();
@@ -48,10 +49,9 @@ class SerialService {
         UsbPort.PARITY_NONE,
       );
 
-      // Usa Transaction para leitura de linhas
       _transaction = Transaction.stringTerminated(
         _port!.inputStream!,
-        Uint8List.fromList([13, 10]), // \r\n
+        Uint8List.fromList([13, 10]),
       );
 
       _subscription = _transaction!.stream.listen((String response) {
@@ -60,9 +60,11 @@ class SerialService {
       });
 
       _isConnected = true;
+      notifyListeners();
       return true;
     } catch (e) {
       _isConnected = false;
+      notifyListeners();
       return false;
     }
   }
@@ -81,10 +83,13 @@ class SerialService {
     _transaction = null;
     await _port?.close();
     _port = null;
+    notifyListeners();
   }
 
+  @override
   void dispose() {
     disconnect();
     _responseController.close();
+    super.dispose();
   }
 }
