@@ -2,7 +2,7 @@
 // connection_screen.dart
 // ==========================================
 import 'package:flutter/material.dart';
-import 'package:flutter_bluetooth_serial_ble/flutter_bluetooth_serial_ble.dart';
+import 'package:flutter_bluetooth_serial_ble/flutter_bluetooth_serial_ble.dart' as bt;
 import '../models/connection_type.dart';
 import '../services/bluetooth_service.dart';
 import '../services/wifi_service.dart';
@@ -17,7 +17,7 @@ class ConnectionScreen extends StatefulWidget {
 }
 
 class _ConnectionScreenState extends State<ConnectionScreen> {
-  ConnectionType _selectedType = ConnectionType.wifi;
+  AppConnectionType _selectedType = AppConnectionType.wifi;
   bool _isConnecting = false;
   String _status = 'Selecione o modo de conexão';
 
@@ -35,26 +35,26 @@ class _ConnectionScreenState extends State<ConnectionScreen> {
 
     try {
       switch (_selectedType) {
-        case ConnectionType.bluetooth:
+        case AppConnectionType.bluetooth:
           _status = 'Buscando CrazyCat via Bluetooth...';
           setState(() {});
           final devices = await _btService.scanDevices();
           final target = devices.firstWhere(
             (d) => d.name?.contains('CrazyCat') ?? false,
-            orElse: () => devices.isNotEmpty ? devices.first : BluetoothDevice(address: ''),
+            orElse: () => devices.isNotEmpty ? devices.first : bt.BluetoothDevice(address: ''),
           );
           if (devices.isNotEmpty && target.address.isNotEmpty) {
             connected = await _btService.connect(target);
           }
           break;
 
-        case ConnectionType.wifi:
+        case AppConnectionType.wifi:
           _status = 'Conectando ao AP CrazyCat (192.168.4.1)...';
           setState(() {});
           connected = await _wifiService.connectToESP32();
           break;
 
-        case ConnectionType.usbSerial:
+        case AppConnectionType.usbSerial:
           _status = 'Buscando dispositivo USB...';
           setState(() {});
           final devices = await _serialService.getAvailableDevices();
@@ -84,7 +84,7 @@ class _ConnectionScreenState extends State<ConnectionScreen> {
     });
   }
 
-  Widget _buildConnectionCard(ConnectionType type, String title,
+  Widget _buildConnectionCard(AppConnectionType type, String title,
       String subtitle, IconData icon, Color color) {
     final isSelected = _selectedType == type;
     return GestureDetector(
@@ -181,21 +181,21 @@ class _ConnectionScreenState extends State<ConnectionScreen> {
               ),
               const SizedBox(height: 30),
               _buildConnectionCard(
-                ConnectionType.wifi,
+                AppConnectionType.wifi,
                 'WiFi',
                 'Conectar ao AP CrazyCat (192.168.4.1)',
                 Icons.wifi,
                 const Color(0xFF667eea),
               ),
               _buildConnectionCard(
-                ConnectionType.bluetooth,
+                AppConnectionType.bluetooth,
                 'Bluetooth',
                 'Parear com CrazyCat via Serial BT',
                 Icons.bluetooth,
                 const Color(0xFF00b09b),
               ),
               _buildConnectionCard(
-                ConnectionType.usbSerial,
+                AppConnectionType.usbSerial,
                 'USB Serial',
                 'Conectar via cabo USB OTG',
                 Icons.usb,
