@@ -47,3 +47,9 @@ dependencies:
   flutter_usb_serial: ^0.5.0
   flutter_mjpeg: ^2.0.4
   provider: ^6.1.1
+
+
+Aviso Legal
+Este software e destinado exclusivamente para fins educacionais e testes de penetracao em redes que voce possui permissao. O uso indevido e ilegal.
+Licenca
+MIT License - RF Hacking Community 2026
