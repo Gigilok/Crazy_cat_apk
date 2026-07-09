@@ -1,4 +1,4 @@
-enum ConnectionType {
+enum AppConnectionType {
   bluetooth,
   wifi,
   usbSerial,
