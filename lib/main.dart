@@ -18,6 +18,7 @@ import 'services/bluetooth_service.dart';
 import 'services/wifi_service.dart';
 import 'services/serial_service.dart';
 import 'services/esp32_api.dart';
+import 'models/connection_type.dart';
 import 'utils/constants.dart';
 
 void main() {
@@ -120,15 +121,13 @@ class CrazyCatApp extends StatelessWidget {
           '/': (context) => const SplashScreen(),
           '/connect': (context) => const ConnectionScreen(),
           '/dashboard': (context) => const DashboardScreen(
-            connectionType: ConnectionType.wifi,
+            connectionType: AppConnectionType.wifi,
           ),
           '/rf-tools': (context) => const RFToolsScreen(),
           '/wireless-tools': (context) => const WirelessToolsScreen(),
           '/attack-tools': (context) => const AttackToolsScreen(),
           '/camera-hacker': (context) => const CameraHackerScreen(),
-          '/camera-viewer': (context) => const CameraViewerScreen(
-            camera: {},
-          ),
+          '/camera-viewer': (context) => const CameraViewerScreen(),
           '/signal-manager': (context) => const SignalManagerScreen(),
           '/settings': (context) => const SettingsScreen(),
           '/terminal': (context) => const TerminalScreen(),
