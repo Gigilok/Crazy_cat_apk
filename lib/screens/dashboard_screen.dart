@@ -12,7 +12,7 @@ import 'settings_screen.dart';
 import 'terminal_screen.dart';
 
 class DashboardScreen extends StatefulWidget {
-  final ConnectionType connectionType;
+  final AppConnectionType connectionType;
 
   const DashboardScreen({super.key, required this.connectionType});
 
@@ -117,10 +117,10 @@ class _DashboardScreenState extends State<DashboardScreen> {
                         mainAxisSize: MainAxisSize.min,
                         children: [
                           Icon(
-                            widget.connectionType == ConnectionType.wifi
+                            widget.connectionType == AppConnectionType.wifi
                                 ? Icons.wifi
                                 : widget.connectionType ==
-                                        ConnectionType.bluetooth
+                                        AppConnectionType.bluetooth
                                     ? Icons.bluetooth
                                     : Icons.usb,
                             color: const Color(0xFF00ff00),
@@ -128,10 +128,10 @@ class _DashboardScreenState extends State<DashboardScreen> {
                           ),
                           const SizedBox(width: 6),
                           Text(
-                            widget.connectionType == ConnectionType.wifi
+                            widget.connectionType == AppConnectionType.wifi
                                 ? 'WiFi'
                                 : widget.connectionType ==
-                                        ConnectionType.bluetooth
+                                        AppConnectionType.bluetooth
                                     ? 'BT'
                                     : 'USB',
                             style: const TextStyle(
