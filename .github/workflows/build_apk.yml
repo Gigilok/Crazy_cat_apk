@@ -30,6 +30,20 @@ jobs:
           flutter-version: '3.16.0'
           channel: 'stable'
 
+      - name: Recreate Android project
+        run: |
+          # Backup dos arquivos personalizados
+          cp android/app/src/main/AndroidManifest.xml /tmp/AndroidManifest.xml 2>/dev/null || true
+          cp android/app/src/main/res/xml/device_filter.xml /tmp/device_filter.xml 2>/dev/null || true
+          # Deleta a pasta android baguncada
+          rm -rf android
+          # Recria com a estrutura correta do Flutter 3.16.0
+          flutter create --platforms=android .
+          # Restaura os arquivos personalizados
+          cp /tmp/AndroidManifest.xml android/app/src/main/AndroidManifest.xml 2>/dev/null || true
+          mkdir -p android/app/src/main/res/xml
+          cp /tmp/device_filter.xml android/app/src/main/res/xml/device_filter.xml 2>/dev/null || true
+
       - name: Get dependencies
         run: flutter pub get
 
