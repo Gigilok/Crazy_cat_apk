@@ -2,7 +2,7 @@
 // connection_screen.dart
 // ==========================================
 import 'package:flutter/material.dart';
-import 'package:flutter_bluetooth_serial/flutter_bluetooth_serial.dart';
+import 'package:flutter_bluetooth_serial_ble/flutter_bluetooth_serial_ble.dart';
 import '../models/connection_type.dart';
 import '../services/bluetooth_service.dart';
 import '../services/wifi_service.dart';
@@ -41,9 +41,9 @@ class _ConnectionScreenState extends State<ConnectionScreen> {
           final devices = await _btService.scanDevices();
           final target = devices.firstWhere(
             (d) => d.name?.contains('CrazyCat') ?? false,
-            orElse: () => devices.first,
+            orElse: () => devices.isNotEmpty ? devices.first : BluetoothDevice(address: ''),
           );
-          if (devices.isNotEmpty) {
+          if (devices.isNotEmpty && target.address.isNotEmpty) {
             connected = await _btService.connect(target);
           }
           break;
