@@ -18,7 +18,6 @@ class WiFiService extends ChangeNotifier {
   String _wifiName = '';
   String _lastError = '';
   
-  // Getters
   bool get isConnected => _isConnected;
   bool get isConnecting => _isConnecting;
   String get esp32IP => _esp32IP;
@@ -26,7 +25,6 @@ class WiFiService extends ChangeNotifier {
   String get wifiName => _wifiName;
   String get lastError => _lastError;
   
-  // Stream para logs
   final StreamController<String> _logController = StreamController<String>.broadcast();
   Stream<String> get logStream => _logController.stream;
   
@@ -49,13 +47,16 @@ class WiFiService extends ChangeNotifier {
       _localIP = await _networkInfo.getWifiIP() ?? '';
       _wifiName = await _networkInfo.getWifiName() ?? '';
       
-      // Verifica se está conectado ao CrazyCat
       if (_wifiName.toLowerCase().contains('crazycat')) {
         _esp32IP = AppConstants.esp32DefaultIP;
       }
     }
     
     notifyListeners();
+  }
+  
+  Future<bool> connectToESP32() async {
+    return await testConnection(AppConstants.esp32DefaultIP);
   }
   
   Future<bool> testConnection(String ip) async {
