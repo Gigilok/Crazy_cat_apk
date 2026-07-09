@@ -1,8 +1,8 @@
 // ==========================================
-// rf_tools_screen.dart - CORRIGIDO
+// rf_tools_screen.dart
 // ==========================================
 import 'package:flutter/material.dart';
-import '../utils/constants.dart';  // MUDOU: era commands.dart
+import '../utils/constants.dart';
 
 class RFToolsScreen extends StatelessWidget {
   const RFToolsScreen({super.key});
