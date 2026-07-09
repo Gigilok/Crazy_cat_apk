@@ -5,9 +5,10 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:typed_data';
+import 'package:flutter/material.dart';
 import 'package:flutter_bluetooth_serial_ble/flutter_bluetooth_serial_ble.dart';
 
-class BluetoothService {
+class BluetoothService extends ChangeNotifier {
   static final BluetoothService _instance = BluetoothService._internal();
   factory BluetoothService() => _instance;
   BluetoothService._internal();
@@ -16,9 +17,11 @@ class BluetoothService {
   BluetoothConnection? _connection;
   final StreamController<String> _responseController = StreamController<String>.broadcast();
   bool _isConnected = false;
+  String _lastError = '';
 
   Stream<String> get responseStream => _responseController.stream;
   bool get isConnected => _isConnected;
+  String get lastError => _lastError;
 
   Future<List<BluetoothDevice>> scanDevices() async {
     _bluetooth ??= FlutterBluetoothSerial.instance;
@@ -26,6 +29,8 @@ class BluetoothService {
       final bonded = await _bluetooth!.getBondedDevices();
       return bonded;
     } catch (e) {
+      _lastError = 'Scan error: $e';
+      notifyListeners();
       return [];
     }
   }
@@ -39,10 +44,13 @@ class BluetoothService {
           String response = utf8.decode(data);
           _responseController.add(response);
         });
+        notifyListeners();
         return true;
       }
       return false;
     } catch (e) {
+      _lastError = 'Connect error: $e';
+      notifyListeners();
       return false;
     }
   }
@@ -58,10 +66,13 @@ class BluetoothService {
     _isConnected = false;
     await _connection?.close();
     _connection = null;
+    notifyListeners();
   }
 
+  @override
   void dispose() {
     disconnect();
     _responseController.close();
+    super.dispose();
   }
 }
