@@ -1,0 +1,38 @@
+lib/
+├── main.dart
+├── utils/
+│   ├── constants.dart
+│   └── commands.dart
+├── services/
+│   ├── bluetooth_service.dart
+│   ├── wifi_service.dart
+│   ├── serial_service.dart
+│   ├── esp32_api.dart
+│   └── camera_stream_service.dart
+├── models/
+│   ├── connection_type.dart
+│   ├── wifi_network.dart
+│   ├── ble_device.dart
+│   ├── camera_device.dart
+│   ├── rf_signal.dart
+│   └── attack_status.dart
+├── screens/
+│   ├── splash_screen.dart
+│   ├── connection_screen.dart
+│   ├── dashboard_screen.dart
+│   ├── rf_tools_screen.dart
+│   ├── wireless_tools_screen.dart
+│   ├── attack_tools_screen.dart
+│   ├── camera_hacker_screen.dart
+│   ├── camera_viewer_screen.dart
+│   ├── signal_manager_screen.dart
+│   ├── settings_screen.dart
+│   └── terminal_screen.dart
+└── widgets/
+    ├── connection_card.dart
+    ├── tool_button.dart
+    ├── status_bar.dart
+    ├── log_console.dart
+    ├── network_list_item.dart
+    ├── camera_list_item.dart
+    └── rf_spectrum_widget.dart
