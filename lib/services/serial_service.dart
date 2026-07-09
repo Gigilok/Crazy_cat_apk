@@ -1,10 +1,11 @@
 // ==========================================
-// serial_service.dart
+// serial_service.dart - CORRIGIDO
+// Usa usb_serial: ^0.5.2 (nao flutter_usb_serial)
 // ==========================================
 import 'dart:async';
 import 'dart:typed_data';
-import 'package:flutter_usb_serial/flutter_usb_serial.dart';
-import 'package:flutter/services.dart';
+import 'package:usb_serial/usb_serial.dart';
+import 'package:usb_serial/transaction.dart';
 
 class SerialService {
   static final SerialService _instance = SerialService._internal();
@@ -13,6 +14,7 @@ class SerialService {
 
   UsbPort? _port;
   StreamSubscription? _subscription;
+  Transaction<String>? _transaction;
   final StreamController<String> _responseController = StreamController<String>.broadcast();
   String _lastResponse = '';
   bool _isConnected = false;
@@ -23,7 +25,7 @@ class SerialService {
 
   Future<List<UsbDevice>> getAvailableDevices() async {
     try {
-      return await FlutterUsbSerial.listDevices();
+      return await UsbSerial.listDevices();
     } catch (e) {
       return [];
     }
@@ -31,7 +33,7 @@ class SerialService {
 
   Future<bool> connect(UsbDevice device, {int baudRate = 115200}) async {
     try {
-      _port = await FlutterUsbSerial.create(device, baudRate);
+      _port = await device.create();
       if (_port == null) return false;
 
       bool openResult = await _port!.open();
@@ -46,8 +48,13 @@ class SerialService {
         UsbPort.PARITY_NONE,
       );
 
-      _subscription = _port!.inputStream!.listen((Uint8List data) {
-        String response = utf8.decode(data);
+      // Usa Transaction para leitura de linhas
+      _transaction = Transaction.stringTerminated(
+        _port!.inputStream!,
+        Uint8List.fromList([13, 10]), // \r\n
+      );
+
+      _subscription = _transaction!.stream.listen((String response) {
         _lastResponse = response;
         _responseController.add(response);
       });
@@ -62,7 +69,7 @@ class SerialService {
 
   Future<void> sendCommand(String command) async {
     if (_port == null || !_isConnected) return;
-    Uint8List data = Uint8List.fromList(utf8.encode('$command\r\n'));
+    Uint8List data = Uint8List.fromList('$command\r\n'.codeUnits);
     await _port!.write(data);
   }
 
@@ -70,6 +77,8 @@ class SerialService {
     _isConnected = false;
     await _subscription?.cancel();
     _subscription = null;
+    _transaction?.dispose();
+    _transaction = null;
     await _port?.close();
     _port = null;
   }
