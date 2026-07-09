@@ -27,6 +27,19 @@ jobs:
           flutter-version: '3.16.0'
           channel: 'stable'
 
+      - name: Recreate Android project
+        run: |
+          # Backup do AndroidManifest se existir
+          cp android/app/src/main/AndroidManifest.xml /tmp/AndroidManifest.xml 2>/dev/null || true
+          # Deleta pasta android bagunçada
+          rm -rf android
+          # Gera projeto android limpo em temp
+          flutter create --platforms=android --project-name crazycat_controller /tmp/crazycat_temp
+          # Copia a pasta android gerada de volta
+          cp -r /tmp/crazycat_temp/android .
+          # Restaura AndroidManifest se tinha backup
+          cp /tmp/AndroidManifest.xml android/app/src/main/AndroidManifest.xml 2>/dev/null || true
+
       - name: Get dependencies
         run: flutter pub get
 
