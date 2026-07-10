@@ -15,10 +15,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
   bool _autoConnect = true;
   bool _notifications = true;
   String _selectedBaudRate = '115200';
-  String _selectedTheme = 'Cyberpunk';
 
   final List<String> _baudRates = ['9600', '19200', '38400', '57600', '115200', '230400'];
-  final List<String> _themes = ['Cyberpunk', 'Matrix', 'Dark', 'Light'];
 
   @override
   Widget build(BuildContext context) {
@@ -88,14 +86,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       _darkMode,
                       (v) => setState(() => _darkMode = v),
                     ),
-                    _settingDropdown(
-                      'Tema',
-                      'Estilo visual do aplicativo',
-                      Icons.palette,
-                      _selectedTheme,
-                      _themes,
-                      (v) => setState(() => _selectedTheme = v!),
-                    ),
+                    // IMAGEM DO GATO no lugar do dropdown de temas
+                    _catImageCard(),
 
                     _sectionTitle('NOTIFICACOES'),
                     _settingSwitch(
@@ -227,6 +219,71 @@ class _SettingsScreenState extends State<SettingsScreen> {
     );
   }
 
+  // NOVO: Card com a imagem do gato no lugar do tema
+  Widget _catImageCard() {
+    return Container(
+      margin: const EdgeInsets.only(bottom: 8),
+      padding: const EdgeInsets.all(14),
+      decoration: BoxDecoration(
+        color: const Color(0xFF1a1a2e),
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: const Color(0xFFfa709a).withOpacity(0.3)),
+      ),
+      child: Column(
+        children: [
+          Row(
+            children: [
+              const Icon(Icons.palette, color: Color(0xFFfa709a), size: 24),
+              const SizedBox(width: 14),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text('Tema', style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+                    const Text('Estilo visual do aplicativo', style: TextStyle(color: Colors.white54, fontSize: 12)),
+                  ],
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 12),
+          Container(
+            width: 120,
+            height: 120,
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(20),
+              boxShadow: [
+                BoxShadow(
+                  color: const Color(0xFFfa709a).withOpacity(0.3),
+                  blurRadius: 15,
+                  spreadRadius: 2,
+                ),
+              ],
+            ),
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(20),
+              child: Image.asset(
+                'assets/images/cat_icon.png',
+                fit: BoxFit.cover,
+              ),
+            ),
+          ),
+          const SizedBox(height: 8),
+          const Text(
+            'CrazyCat Theme',
+            style: TextStyle(
+              color: Color(0xFFfa709a),
+              fontSize: 14,
+              fontWeight: FontWeight.bold,
+              letterSpacing: 1,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
   Widget _settingButton(String title, String subtitle, IconData icon, Color color, VoidCallback onTap) {
     return GestureDetector(
       onTap: onTap,
@@ -301,4 +358,3 @@ class _SettingsScreenState extends State<SettingsScreen> {
     );
   }
 }
-
