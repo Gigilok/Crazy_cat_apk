@@ -19,6 +19,7 @@ import 'services/wifi_service.dart';
 import 'services/serial_service.dart';
 import 'services/esp32_api.dart';
 import 'models/connection_type.dart';
+import 'models/camera_device.dart';
 import 'utils/constants.dart';
 
 void main() {
@@ -128,8 +129,8 @@ class CrazyCatApp extends StatelessWidget {
           '/attack-tools': (context) => const AttackToolsScreen(),
           '/camera-hacker': (context) => const CameraHackerScreen(),
           '/camera-viewer': (context) => const CameraViewerScreen(
-  camera: CameraDevice(ip: '', streamPath: '', brand: ''),
-),
+            camera: CameraDevice(ip: '', streamPath: '', brand: ''),
+          ),
           '/signal-manager': (context) => const SignalManagerScreen(),
           '/settings': (context) => const SettingsScreen(),
           '/terminal': (context) => const TerminalScreen(),
