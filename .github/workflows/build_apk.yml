@@ -2,9 +2,9 @@ name: Build CrazyCat APK
 
 on:
   push:
-    branches: [principal]
+    branches: [main]
   pull_request:
-    branches: [principal]
+    branches: [main]
   workflow_dispatch:
 
 jobs:
@@ -33,7 +33,7 @@ jobs:
       - name: Generate launcher icons
         run: flutter pub run flutter_launcher_icons
 
-      - name: Backup icons and manifest
+      - name: Backup custom Android files
         run: |
           mkdir -p /tmp/android_backup
           # Backup dos ícones gerados pelo flutter_launcher_icons
@@ -42,6 +42,8 @@ jobs:
           cp android/app/src/main/AndroidManifest.xml /tmp/android_backup/ 2>/dev/null || true
           # Backup do device_filter.xml
           cp -r android/app/src/main/res/xml /tmp/android_backup/ 2>/dev/null || true
+          # Backup do build.gradle do app
+          cp android/app/build.gradle /tmp/android_backup/ 2>/dev/null || true
 
       - name: Recreate Android project
         run: |
@@ -49,7 +51,7 @@ jobs:
           flutter create --platforms=android --project-name crazycat_controller /tmp/crazycat_temp
           cp -r /tmp/crazycat_temp/android .
 
-      - name: Restore icons and manifest
+      - name: Restore custom Android files
         run: |
           # Restaura os ícones do gato
           cp -r /tmp/android_backup/mipmap-* android/app/src/main/res/ 2>/dev/null || true
@@ -58,6 +60,8 @@ jobs:
           # Restaura device_filter.xml
           mkdir -p android/app/src/main/res/xml
           cp -r /tmp/android_backup/xml/* android/app/src/main/res/xml/ 2>/dev/null || true
+          # Restaura build.gradle do app
+          cp /tmp/android_backup/build.gradle android/app/build.gradle 2>/dev/null || true
 
       - name: Build APK
         run: flutter build apk --release
@@ -69,7 +73,7 @@ jobs:
           path: build/app/outputs/flutter-apk/app-release.apk
 
       - name: Create Release
-        if: github.ref == 'refs/heads/principal'
+        if: github.ref == 'refs/heads/main'
         uses: ncipollo/release-action@v1
         with:
           artifacts: "build/app/outputs/flutter-apk/app-release.apk"
