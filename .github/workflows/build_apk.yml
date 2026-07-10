@@ -36,13 +36,9 @@ jobs:
       - name: Backup custom Android files
         run: |
           mkdir -p /tmp/android_backup
-          # Backup dos ícones gerados pelo flutter_launcher_icons
           cp -r android/app/src/main/res/mipmap-* /tmp/android_backup/ 2>/dev/null || true
-          # Backup do AndroidManifest
           cp android/app/src/main/AndroidManifest.xml /tmp/android_backup/ 2>/dev/null || true
-          # Backup do device_filter.xml
           cp -r android/app/src/main/res/xml /tmp/android_backup/ 2>/dev/null || true
-          # Backup do build.gradle do app
           cp android/app/build.gradle /tmp/android_backup/ 2>/dev/null || true
 
       - name: Recreate Android project
@@ -53,14 +49,10 @@ jobs:
 
       - name: Restore custom Android files
         run: |
-          # Restaura os ícones do gato
           cp -r /tmp/android_backup/mipmap-* android/app/src/main/res/ 2>/dev/null || true
-          # Restaura AndroidManifest
           cp /tmp/android_backup/AndroidManifest.xml android/app/src/main/AndroidManifest.xml 2>/dev/null || true
-          # Restaura device_filter.xml
           mkdir -p android/app/src/main/res/xml
           cp -r /tmp/android_backup/xml/* android/app/src/main/res/xml/ 2>/dev/null || true
-          # Restaura build.gradle do app
           cp /tmp/android_backup/build.gradle android/app/build.gradle 2>/dev/null || true
 
       - name: Build APK
