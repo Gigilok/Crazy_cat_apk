@@ -1,40 +1,76 @@
-name: crazycat_controller
-description: CrazyCat Controller - App para controle de dispositivos.
-publish_to: 'none'
-version: 3.0.0+1
+name: Build CrazyCat APK
 
-environment:
-  sdk: '>=3.0.0 <4.0.0'
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
 
-dependencies:
-  flutter:
-    sdk: flutter
-  cupertino_icons: ^1.0.6
-  http: ^1.1.0
-  flutter_bluetooth_serial_ble: ^0.5.0
-  permission_handler: ^11.0.1
-  shared_preferences: ^2.2.2
-  google_fonts: ^5.1.0
-  provider: ^6.1.1
-  connectivity_plus: ^5.0.2
-  network_info_plus: ^4.1.0
-  usb_serial: ^0.5.1
+jobs:
+  build:
+    runs-on: ubuntu-latest
 
-dev_dependencies:
-  flutter_test:
-    sdk: flutter
-  flutter_lints: ^3.0.1
-  flutter_launcher_icons: ^0.13.1
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
-flutter:
-  uses-material-design: true
-  assets:
-    - assets/images/cat_icon.png
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
 
-flutter_icons:
-  android: true
-  ios: true
-  image_path: "assets/images/cat_icon.png"
-  adaptive_icon_background: "#FFFFFF"
-  adaptive_icon_foreground: "assets/images/cat_icon.png"
-  
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.16.0'
+          channel: 'stable'
+
+      - name: Get dependencies
+        run: flutter pub get
+
+      - name: Generate launcher icons
+        run: flutter pub run flutter_launcher_icons
+
+      - name: Backup custom Android files
+        run: |
+          mkdir -p /tmp/android_backup
+          cp -r android/app/src/main/res/mipmap-* /tmp/android_backup/ 2>/dev/null || true
+          cp android/app/src/main/AndroidManifest.xml /tmp/android_backup/ 2>/dev/null || true
+          cp -r android/app/src/main/res/xml /tmp/android_backup/ 2>/dev/null || true
+          cp android/app/build.gradle /tmp/android_backup/ 2>/dev/null || true
+
+      - name: Recreate Android project
+        run: |
+          rm -rf android
+          flutter create --platforms=android --project-name crazycat_controller /tmp/crazycat_temp
+          cp -r /tmp/crazycat_temp/android .
+
+      - name: Restore custom Android files
+        run: |
+          cp -r /tmp/android_backup/mipmap-* android/app/src/main/res/ 2>/dev/null || true
+          cp /tmp/android_backup/AndroidManifest.xml android/app/src/main/AndroidManifest.xml 2>/dev/null || true
+          mkdir -p android/app/src/main/res/xml
+          cp -r /tmp/android_backup/xml/* android/app/src/main/res/xml/ 2>/dev/null || true
+          cp /tmp/android_backup/build.gradle android/app/build.gradle 2>/dev/null || true
+
+      - name: Build APK
+        run: flutter build apk --release
+
+      - name: Upload APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: crazycat-apk
+          path: build/app/outputs/flutter-apk/app-release.apk
+
+      - name: Create Release
+        if: github.ref == 'refs/heads/main'
+        uses: ncipollo/release-action@v1
+        with:
+          artifacts: "build/app/outputs/flutter-apk/app-release.apk"
+          tag: v${{ github.run_number }}
+          name: CrazyCat v3.0.${{ github.run_number }}
+          body: "Build automatico do CrazyCat Controller APK"
+          token: ${{ secrets.GITHUB_TOKEN }}
+          
