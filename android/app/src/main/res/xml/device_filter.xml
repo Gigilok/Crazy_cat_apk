@@ -1,19 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- FTDI FT232R UART -->
-    <usb-device vendor-id="1027" product-id="24577" />
-    <!-- FTDI FT231X -->
     <usb-device vendor-id="1027" product-id="24597" />
-    <!-- Arduino -->
-    <usb-device vendor-id="9025" />
-    <!-- Teensyduino -->
-    <usb-device vendor-id="5824" product-id="1155" />
-    <!-- CP210x UART Bridge -->
-    <usb-device vendor-id="4292" product-id="60000" />
-    <!-- Prolific PL2303 -->
-    <usb-device vendor-id="1659" product-id="8963" />
-    <!-- Segger JLink -->
-    <usb-device vendor-id="4966" product-id="261" />
-    <!-- CH340 -->
-    <usb-device vendor-id="6790" product-id="29987" />
+    <usb-device vendor-id="1027" product-id="24596" />
+    <usb-device vendor-id="1027" product-id="24577" />
+    <usb-device vendor-id="1027" product-id="24592" />
+    <usb-device vendor-id="1027" product-id="24593" />
+    <usb-device vendor-id="1027" product-id="24594" />
+    <usb-device vendor-id="1027" product-id="24595" />
+    <usb-device vendor-id="1027" product-id="24598" />
+    <usb-device vendor-id="1027" product-id="24599" />
+    <usb-device vendor-id="1027" product-id="24600" />
+    <usb-device vendor-id="1027" product-id="24601" />
+    <usb-device vendor-id="1027" product-id="24602" />
+    <usb-device vendor-id="1027" product-id="24603" />
+    <usb-device vendor-id="1027" product-id="24604" />
+    <usb-device vendor-id="1027" product-id="24605" />
+    <usb-device vendor-id="1027" product-id="24606" />
+    <usb-device vendor-id="1027" product-id="24607" />
+    <usb-device vendor-id="1027" product-id="24608" />
+    <usb-device vendor-id="1027" product-id="24609" />
+    <usb-device vendor-id="1027" product-id="24610" />
+    <usb-device vendor-id="1027" product-id="24611" />
+    <usb-device vendor-id="1027" product-id="24612" />
+    <usb-device vendor-id="1027" product-id="24613" />
+    <usb-device vendor-id="1027" product-id="24614" />
+    <usb-device vendor-id="1027" product-id="24615" />
+    <usb-device vendor-id="1027" product-id="24616" />
+    <usb-device vendor-id="1027" product-id="24617" />
+    <usb-device vendor-id="1027" product-id="24618" />
+    <usb-device vendor-id="1027" product-id="24619" />
 </resources>
