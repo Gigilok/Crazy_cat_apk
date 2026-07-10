@@ -31,7 +31,7 @@ jobs:
         run: |
           # Backup do AndroidManifest se existir
           cp android/app/src/main/AndroidManifest.xml /tmp/AndroidManifest.xml 2>/dev/null || true
-          # Deleta pasta android bagunçada
+          # Deleta pasta android baguncada
           rm -rf android
           # Gera projeto android limpo em temp
           flutter create --platforms=android --project-name crazycat_controller /tmp/crazycat_temp
@@ -39,6 +39,12 @@ jobs:
           cp -r /tmp/crazycat_temp/android .
           # Restaura AndroidManifest se tinha backup
           cp /tmp/AndroidManifest.xml android/app/src/main/AndroidManifest.xml 2>/dev/null || true
+          # Cria device_filter.xml necessario para USB serial
+          mkdir -p android/app/src/main/res/xml
+          echo '<?xml version="1.0" encoding="utf-8"?>' > android/app/src/main/res/xml/device_filter.xml
+          echo '<resources>' >> android/app/src/main/res/xml/device_filter.xml
+          echo '    <usb-device vendor-id="1027" product-id="24597" />' >> android/app/src/main/res/xml/device_filter.xml
+          echo '</resources>' >> android/app/src/main/res/xml/device_filter.xml
 
       - name: Get dependencies
         run: flutter pub get
