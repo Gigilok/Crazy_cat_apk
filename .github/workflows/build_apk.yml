@@ -2,9 +2,9 @@ name: Build CrazyCat APK
 
 on:
   push:
-    branches: [main]
+    branches: [principal]
   pull_request:
-    branches: [main]
+    branches: [principal]
   workflow_dispatch:
 
 jobs:
@@ -27,27 +27,37 @@ jobs:
           flutter-version: '3.16.0'
           channel: 'stable'
 
-      - name: Recreate Android project
-        run: |
-          # Backup do AndroidManifest se existir
-          cp android/app/src/main/AndroidManifest.xml /tmp/AndroidManifest.xml 2>/dev/null || true
-          # Deleta pasta android baguncada
-          rm -rf android
-          # Gera projeto android limpo em temp
-          flutter create --platforms=android --project-name crazycat_controller /tmp/crazycat_temp
-          # Copia a pasta android gerada de volta
-          cp -r /tmp/crazycat_temp/android .
-          # Restaura AndroidManifest se tinha backup
-          cp /tmp/AndroidManifest.xml android/app/src/main/AndroidManifest.xml 2>/dev/null || true
-          # Cria device_filter.xml necessario para USB serial
-          mkdir -p android/app/src/main/res/xml
-          echo '<?xml version="1.0" encoding="utf-8"?>' > android/app/src/main/res/xml/device_filter.xml
-          echo '<resources>' >> android/app/src/main/res/xml/device_filter.xml
-          echo '    <usb-device vendor-id="1027" product-id="24597" />' >> android/app/src/main/res/xml/device_filter.xml
-          echo '</resources>' >> android/app/src/main/res/xml/device_filter.xml
-
       - name: Get dependencies
         run: flutter pub get
+
+      - name: Generate launcher icons
+        run: flutter pub run flutter_launcher_icons
+
+      - name: Backup icons and manifest
+        run: |
+          mkdir -p /tmp/android_backup
+          # Backup dos ícones gerados pelo flutter_launcher_icons
+          cp -r android/app/src/main/res/mipmap-* /tmp/android_backup/ 2>/dev/null || true
+          # Backup do AndroidManifest
+          cp android/app/src/main/AndroidManifest.xml /tmp/android_backup/ 2>/dev/null || true
+          # Backup do device_filter.xml
+          cp -r android/app/src/main/res/xml /tmp/android_backup/ 2>/dev/null || true
+
+      - name: Recreate Android project
+        run: |
+          rm -rf android
+          flutter create --platforms=android --project-name crazycat_controller /tmp/crazycat_temp
+          cp -r /tmp/crazycat_temp/android .
+
+      - name: Restore icons and manifest
+        run: |
+          # Restaura os ícones do gato
+          cp -r /tmp/android_backup/mipmap-* android/app/src/main/res/ 2>/dev/null || true
+          # Restaura AndroidManifest
+          cp /tmp/android_backup/AndroidManifest.xml android/app/src/main/AndroidManifest.xml 2>/dev/null || true
+          # Restaura device_filter.xml
+          mkdir -p android/app/src/main/res/xml
+          cp -r /tmp/android_backup/xml/* android/app/src/main/res/xml/ 2>/dev/null || true
 
       - name: Build APK
         run: flutter build apk --release
@@ -59,7 +69,7 @@ jobs:
           path: build/app/outputs/flutter-apk/app-release.apk
 
       - name: Create Release
-        if: github.ref == 'refs/heads/main'
+        if: github.ref == 'refs/heads/principal'
         uses: ncipollo/release-action@v1
         with:
           artifacts: "build/app/outputs/flutter-apk/app-release.apk"
